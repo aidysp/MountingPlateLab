@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>  <!-- ИЛИ net8.0-windows -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>Library</OutputType>
+    <Nullable>disable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
+    <!-- ВАЖНО: Эти строки для совместимости -->
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MountingPlatePlugin.Model\MountingPlatePlugin.Model.csproj" />
+    <ProjectReference Include="..\MountingPlatePlugin.View\MountingPlatePlugin.View.csproj" />
+  </ItemGroup>
+  
+  <!-- ПУТЬ ДОЛЖЕН БЫТЬ ПРАВИЛЬНЫМ! -->
+  <ItemGroup>
+    <Reference Include="hostmgd">
+      <HintPath>..\lib\hostmgd.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="hostdbmgd">
+      <HintPath>..\lib\hostdbmgd.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
