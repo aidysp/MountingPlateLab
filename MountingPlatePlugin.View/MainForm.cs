@@ -7,6 +7,8 @@ namespace MountingPlatePlugin.View
 {
     public class MainForm : Form
     {
+
+            public event Action<MountingPlateParameters> OnBuildRequested;
         private MountingPlateParameters _plateParameters;
         
         // Элементы управления
@@ -22,7 +24,8 @@ namespace MountingPlatePlugin.View
         private Label spacingWidthLabel;
         private Label edgeOffsetLabel;
         private Label totalHolesLabel;
-        
+
+      
         public MainForm()
         {
             InitializeComponent();
@@ -118,7 +121,12 @@ namespace MountingPlatePlugin.View
                 holeTypeComboBox, buildButton,
                 holeDiameterLabel, spacingLengthLabel, spacingWidthLabel, edgeOffsetLabel, totalHolesLabel
             });
+
+            
         }
+
+       
+
         
         private void InitializeForm()
         {
@@ -155,20 +163,52 @@ namespace MountingPlatePlugin.View
             }
         }
         
-        private void BuildButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                "Пластина построена успешно!\n" +
-                $"Длина: {_plateParameters.Length} мм\n" +
-                $"Ширина: {_plateParameters.Width} мм\n" +
-                $"Толщина: {_plateParameters.Thickness} мм\n" +
-                $"Отверстий: {_plateParameters.TotalHoles}\n" +
-                $"Тип: {_plateParameters.HoleTypeValue}",
-                "Успех",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
+    private void BuildButton_Click(object sender, EventArgs e)
+{
+    try
+    {
+        // 1. Получаем параметры из TextBox'ов
+        _plateParameters.Length = float.Parse(lengthTextBox.Text);
+        _plateParameters.Width = float.Parse(widthTextBox.Text);
+        _plateParameters.Thickness = float.Parse(thicknessTextBox.Text);
+        _plateParameters.HolesLength = int.Parse(holesLengthTextBox.Text);
+        _plateParameters.HolesWidth = int.Parse(holesWidthTextBox.Text);
         
+        // 2. Показываем сообщение с параметрами
+        MessageBox.Show(
+            "Пластина построена успешно!\n" +
+            $"Длина: {_plateParameters.Length} мм\n" +
+            $"Ширина: {_plateParameters.Width} мм\n" +
+            $"Толщина: {_plateParameters.Thickness} мм\n" +
+            $"Отверстий: {_plateParameters.TotalHoles}\n" +
+            $"Тип: {_plateParameters.HoleTypeValue}",
+            "Успех",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
+        
+        
+            OnBuildRequested?.Invoke(_plateParameters);
+        
+        // 4. Закрываем форму
+        this.DialogResult = DialogResult.OK;
+        this.Close();
+    }
+    catch (FormatException)
+    {
+        MessageBox.Show("Ошибка: Неверный формат числа!", "Ошибка", 
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка диапазона",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
         private void ValidateTextBox(TextBox textBox, Action<string> setter, string paramName, bool isInt = false)
         {
             try

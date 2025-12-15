@@ -24,6 +24,12 @@ namespace MountingPlatePlugin.Builder
             {
                 // Создаем и показываем форму
                 var form = new MainForm();
+
+                  form.OnBuildRequested += (parameters) => {
+        BuildPlate(parameters);
+    };
+
+      
                 
                 // Используем nanoCAD Application для диалога
                 HostMgd.ApplicationServices.Application.ShowModalDialog(form);
