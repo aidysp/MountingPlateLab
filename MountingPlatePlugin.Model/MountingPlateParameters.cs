@@ -7,6 +7,8 @@ namespace MountingPlatePlugin.Model
     /// </summary>
     public class MountingPlateParameters
     {
+
+
         // Приватные поля-параметры
         private readonly Parameter<float> _length = new Parameter<float>(
             Constants.MIN_LENGTH,

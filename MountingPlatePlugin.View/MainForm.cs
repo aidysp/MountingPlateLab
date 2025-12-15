@@ -10,6 +10,8 @@ namespace MountingPlatePlugin.View
 
             public event Action<MountingPlateParameters> OnBuildRequested;
         private MountingPlateParameters _plateParameters;
+           // Публичное свойство для доступа к параметрам из PlateBuilder
+           public MountingPlateParameters PlateParameters => _plateParameters;
         
         // Элементы управления
         private TextBox lengthTextBox;
@@ -187,7 +189,7 @@ namespace MountingPlatePlugin.View
             MessageBoxIcon.Information);
         
         
-            OnBuildRequested?.Invoke(_plateParameters);
+            // OnBuildRequested?.Invoke(_plateParameters);
         
         // 4. Закрываем форму
         this.DialogResult = DialogResult.OK;
